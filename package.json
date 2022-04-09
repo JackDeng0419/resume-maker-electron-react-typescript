@@ -1,0 +1,12 @@
+{
+  "name": "resume-maker-electron-react-typescript",
+  "version": "0.0.1",
+  "author": "Jack Deng",
+  "description": "build a resume maker using electron, react and typescript",
+  "scripts": {
+    "start:main": "electron ./app/main/electron.js"
+  },
+  "dependencies": {
+    "electron": "^11.1.1"
+  }
+}
