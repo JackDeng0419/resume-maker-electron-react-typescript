@@ -1,29 +1,39 @@
 const path = require('path');
-const {CleanWebpackPlugin} = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
-module.exports = { 
+module.exports = {
+  // configure how webpack index the imported modules
+  resolve: {
+    // when the imported module doesn't have postfix, webpack will check with these extensions.
+    extensions: ['.js', '.jsx', '.ts', '.tsx'],
 
-    // configure how webpack index the imported modules
-    resolve: {
-
-        // when the imported module doesn't have postfix, webpack will check with these extensions.
-        extensions: ['.js', '.jsx', '.ts', '.tsx'],  
-
-        // we can use the following alias when importing the module. 
-        alias: {
-            '@src': path.join(__dirname, '../', 'app/renderer'),
+    // we can use the following alias when importing the module.
+    alias: {
+      '@src': path.join(__dirname, '../', 'app/renderer'),
+    },
+  },
+  module: {
+    rules: [
+      {
+        test: /\.(js|jsx|ts|tsx)$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+        },
+      },
+      {
+        test: /\.(jpg|png|jpeg|gif)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name]_[hash].[ext]',
+              outputPath: 'images/',
+            },
           },
-    }, 
-    module: {
-        rules: [
-            {
-                test: /\.(js|jsx|ts|tsx)$/, 
-                exclude: /node_modules/,
-                use: {
-                    loader: 'babel-loader', 
-                }, 
-            }
-        ], 
-    }, 
-    plugins: [new CleanWebpackPlugin()], 
-}
+        ],
+      },
+    ],
+  },
+  plugins: [new CleanWebpackPlugin()],
+};

@@ -4,16 +4,41 @@ const baseConfig = require('./webpack.base.js');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const devConfig = {
-    mode: 'development', 
-    entry: {
-        // 👇 对应渲染进程的 app.jsx 入口文件
-        index: path.resolve(__dirname, '../app/renderer/app.tsx'),
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader', 'postcss-loader'],
       },
-      output: {
-        filename: '[name].[hash].js',
-        path: path.resolve(__dirname, '../dist'),
+      {
+        test: /\.less$/,
+        exclude: /node_modules/,
+        use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              modules: {
+                localIdentName: '[name]__[local]__[hash:base64:5]',
+              },
+            },
+          },
+          'postcss-loader',
+          'less-loader',
+        ],
       },
-      target: 'electron-renderer',
+    ],
+  },
+  mode: 'development',
+  entry: {
+    // 👇 对应渲染进程的 app.jsx 入口文件
+    index: path.resolve(__dirname, '../app/renderer/app.tsx'),
+  },
+  output: {
+    filename: '[name].[hash].js',
+    path: path.resolve(__dirname, '../dist'),
+  },
+  target: 'electron-renderer',
   devtool: 'inline-source-map',
   devServer: {
     contentBase: path.join(__dirname, '../dist'),
@@ -30,7 +55,6 @@ const devConfig = {
       chunks: ['index'],
     }),
   ],
-
-}
+};
 
 module.exports = webpackMerge.merge(baseConfig, devConfig);

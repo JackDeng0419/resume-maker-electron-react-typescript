@@ -1,4 +1,6 @@
 import React from 'react';
+import './index.less';
+import testImg from '../../assets/test.png';
 
 interface IProps {
   /**
@@ -12,7 +14,11 @@ interface IProps {
 }
 
 function Title({ text, styles }: IProps) {
-  return <div style={styles}>{text}</div>;
+  return (
+    <div style={styles} styleName="title">
+      {text}
+    </div>
+  );
 }
 
 export default Title;
